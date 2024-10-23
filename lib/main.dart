@@ -1,3 +1,5 @@
+import 'package:app/events_app.dart';
+import 'package:app/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 // Text : widget
@@ -6,14 +8,16 @@ var afficheText = const Text(
   //TextStyle : widget
   style: TextStyle(
     fontSize: 20.0,
-    color: Colors.blue,
+    color: Colors.grey,
   ),
 );
 
+var afficheIcon = const Icon(
+  Icons.email,
+  color: Colors.amber,
+  size: 25,
+);
+
 void main() {
-  runApp(
-    MaterialApp(
-      home: afficheText,
-    ),
-  );
+  runApp(EventsApp());
 }
