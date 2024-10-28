@@ -75,6 +75,10 @@ class WelcomeScreen extends StatelessWidget {
                 'Sign in',
               ),
             ),
+          
+          
+          
+          
             SizedBox(
               height: 11,
             ),
