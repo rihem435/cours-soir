@@ -156,6 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                     icon: Icon(
                       //++*************************************visibility
+                      // condition ? conditionTrue : conditionFalse
                       obscureText ? Icons.visibility_off : Icons.visibility,
                       //++*************************************visibility
                       color: AppColors.primaryColor,
