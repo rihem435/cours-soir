@@ -1,6 +1,8 @@
+import 'package:app/core/helpers/app_regex.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/theme/styles.dart';
 import 'package:app/core/widgets/app_button.dart';
+import 'package:app/core/widgets/app_input_text.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -11,6 +13,11 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool obscureText = true;
 
+  TextEditingController? emailController;
+  TextEditingController? passwordController;
+
+  GlobalKey<FormState> keyForm = GlobalKey<FormState>();
+
   void showPassword() {
     //point ! not
     setState(() {
@@ -18,6 +25,13 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     print("obscuretext $obscureText");
+  }
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -41,115 +55,43 @@ class _SignInScreenState extends State<SignInScreen> {
             horizontal: 24.0,
             vertical: 25,
           ),
-          child: Column(
-            children: [
-              Text(
-                "Welcome Back!",
-                style: TextStyles.font24BlackBold,
-              ),
-              SizedBox(
-                height: 175,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  label: Text(
-                    'Email',
-                  ),
-                  hintText: "name@example.com",
-                  hintStyle: TextStyle(
-                    color: AppColors.greyColor,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.greyColor,
-                      width: 2,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.greyColor,
-                      width: 2,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.redColor,
-                      width: 2,
-                    ),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.email,
-                    color: AppColors.primaryColor,
-                    size: 20,
-                  ),
+          child: Form(
+            key: keyForm,
+            child: Column(
+              children: [
+                Text(
+                  "Welcome Back!",
+                  style: TextStyles.font24BlackBold,
                 ),
-                obscureText: false,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  label: Text(
-                    'Password',
-                  ),
+                const SizedBox(
+                  height: 175,
+                ),
+
+                /************************************app_input_tet */
+                AppInputText(
+                  label: 'Email',
+                  hintText: "name@example.com",
+                  prefixIcon: Icons.email,
+                  controller: emailController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "email is required";
+                    } else if (!AppRegex.isEmailValid(value)) {
+                      return "Invalid email";
+                    }
+                    return null;
+                  },
+                ),
+                /************************************app_input_tet */
+
+                SizedBox(
+                  height: 30,
+                ),
+                /************************************app_input_tet */
+                AppInputText(
+                  label: 'Password',
                   hintText: "*********",
-                  hintStyle: TextStyle(
-                    color: AppColors.greyColor,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.greyColor,
-                      width: 2,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.greyColor,
-                      width: 2,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        10,
-                      ),
-                    ),
-                    borderSide: BorderSide(
-                      color: AppColors.redColor,
-                      width: 2,
-                    ),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: AppColors.primaryColor,
-                    size: 20,
-                  ),
+                  prefixIcon: Icons.lock,
                   suffix: IconButton(
                     onPressed: () {
                       showPassword();
@@ -163,23 +105,33 @@ class _SignInScreenState extends State<SignInScreen> {
                       size: 20,
                     ),
                   ),
+                  obscureText: obscureText,
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "password is required";
+                    }
+                    return null;
+                  },
                 ),
-                obscureText: obscureText,
-              ),
-              SizedBox(
-                height: 175,
-              ),
-              AppButton(
-                text: Text("Sign In"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SignInScreen(),
-                    ),
-                  );
-                },
-              )
-            ],
+                /************************************app_input_tet */
+
+                SizedBox(
+                  height: 175,
+                ),
+                AppButton(
+                  text: Text("Sign In"),
+                  onPressed: () {
+                    print('email: $emailController');
+                    print('email ====${emailController!.text}');
+
+                    if (keyForm.currentState!.validate()) {
+                      print("form valide");
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
