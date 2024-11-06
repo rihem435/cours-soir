@@ -3,6 +3,8 @@ import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/theme/styles.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
+import 'package:app/screen/forgot_password_screen.dart';
+import 'package:app/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -115,7 +117,29 @@ class _SignInScreenState extends State<SignInScreen> {
                   },
                 ),
                 /************************************app_input_tet */
-
+                SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen(),
+                      ),
+                    );
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 175,
                 ),
@@ -128,6 +152,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     if (keyForm.currentState!.validate()) {
                       print("form valide");
                     }
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ),
+                    );
                   },
                 )
               ],

@@ -30,9 +30,12 @@ class AppInputText extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
-        label: Text(
-          label!,
-        ),
+        label: label != null
+            ? Text(
+                label!,
+              )
+            : null,
+            
         hintText: hintText,
         hintStyle: TextStyle(
           color: AppColors.greyColor,
