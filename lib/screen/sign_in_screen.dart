@@ -1,10 +1,12 @@
 import 'package:app/core/helpers/app_regex.dart';
+import 'package:app/core/networking/app_api.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/theme/styles.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
 import 'package:app/screen/forgot_password_screen.dart';
 import 'package:app/screen/home_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -19,6 +21,52 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController? passwordController;
 
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
+
+  Dio dio = Dio();
+  login() async {
+    try {
+      Map<String, String> data = {
+        "email": emailController!.text,
+        "password": passwordController!.text,
+      };
+      Response response = await dio.post(AppApi.loginUrl, data: data);
+      if (response.statusCode == 201) {
+        print("response =======>${response.data}");
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
+      }
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.badResponse) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: AppColors.primaryColor,
+            content: Text(
+              "password  or email is incorrect",
+              style: TextStyle(
+                color: AppColors.whiteColor,
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      print("error*******************************");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.primaryColor,
+          content: Text(
+            "An error occurred. Please try again.",
+            style: TextStyle(
+              color: AppColors.whiteColor,
+            ),
+          ),
+        ),
+      );
+    }
+  }
 
   void showPassword() {
     //point ! not
@@ -150,13 +198,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     print('email ====${emailController!.text}');
 
                     if (keyForm.currentState!.validate()) {
-                      print("form valide");
+                      login();
                     }
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
-                      ),
-                    );
+                    
                   },
                 )
               ],
