@@ -4,6 +4,7 @@ import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/theme/styles.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
+import 'package:app/model/user/user_model.dart';
 import 'package:app/screen/forgot_password_screen.dart';
 import 'package:app/screen/home_screen.dart';
 import 'package:dio/dio.dart';
@@ -23,6 +24,9 @@ class _SignInScreenState extends State<SignInScreen> {
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
 
   Dio dio = Dio();
+
+  UserModel? userModel;
+
   login() async {
     try {
       Map<String, String> data = {
@@ -32,11 +36,16 @@ class _SignInScreenState extends State<SignInScreen> {
       Response response = await dio.post(AppApi.loginUrl, data: data);
       if (response.statusCode == 201) {
         print("response =======>${response.data}");
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ),
-        );
+
+        userModel = UserModel.fromJson(response.data);
+        
+        if (userModel!.user!.items == "client") {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
+        }
       }
     } on DioException catch (error) {
       if (error.type == DioExceptionType.badResponse) {
@@ -200,7 +209,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     if (keyForm.currentState!.validate()) {
                       login();
                     }
-                    
                   },
                 )
               ],

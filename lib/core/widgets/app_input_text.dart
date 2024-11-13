@@ -12,6 +12,9 @@ class AppInputText extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final Widget? suffix;
+
+  final TextInputType? keyboardType;
+  
   const AppInputText(
       {Key? key,
       this.label,
@@ -23,19 +26,20 @@ class AppInputText extends StatelessWidget {
       this.obscureText,
       this.controller,
       this.validator,
-      this.suffix})
+      this.suffix,
+      this.keyboardType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: keyboardType ?? TextInputType.text,
       decoration: InputDecoration(
         label: label != null
             ? Text(
                 label!,
               )
             : null,
-            
         hintText: hintText,
         hintStyle: TextStyle(
           color: AppColors.greyColor,

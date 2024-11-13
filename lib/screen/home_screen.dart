@@ -65,47 +65,76 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 30,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 25,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        borderRadius: BorderRadius.circular(
-                          20,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 5,
                         ),
-                        border: Border.all(
-                          color: AppColors.primaryColor,
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                          border: Border.all(
+                            color: AppColors.primaryColor,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "data",
-                      ),
-                    );
-                  },
-                  itemCount: 10,
-                  separatorBuilder: (context, index) => SizedBox(
-                    width: 10,
+                        child: Text(
+                          "data",
+                        ),
+                      );
+                    },
+                    itemCount: 10,
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 10,
+                    ),
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 15,
+                ),
+                GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Number of columns
+                      crossAxisSpacing: 10.0, // Spacing between columns
+                      mainAxisSpacing: 10.0, // Spacing between rows
+                    ),
+                    itemCount: 15, // Number of items
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              "https://media.istockphoto.com/id/1288029204/photo/womens-black-leather-bag.jpg?s=2048x2048&w=is&k=20&c=Jbx1wOJKDrMyqeOmnWf40WTFNr6sGDyJvY_qpISsQ_w=",
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        // child: Center(
+                        //   child: Text(
+                        //     'Item $index',
+                        //     style: TextStyle(color: Colors.white, fontSize: 18),
+                        //   ),
+                        // ),
+                      );
+                    })
+              ],
+            ),
           ),
         ));
-  
-  
-  
-  
   }
 }

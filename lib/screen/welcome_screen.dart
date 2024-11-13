@@ -1,6 +1,7 @@
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/screen/sign_in_screen.dart';
+import 'package:app/screen/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -99,7 +100,11 @@ class WelcomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                onPressed: () => print('click button'),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SignUpScreen(),
+                  ),
+                ),
                 backgroundColor: AppColors.whiteColor,
                 borderSide: BorderSide(
                   color: AppColors.greyColor,
