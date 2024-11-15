@@ -1,8 +1,10 @@
 import 'package:app/core/helpers/app_regex.dart';
+import 'package:app/core/networking/app_api.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
 import 'package:app/screen/verfiy_code_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -13,6 +15,38 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   TextEditingController? emailController;
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
+
+  Dio dio = Dio();
+  forget() async {
+    try {
+      Map<String, dynamic> data = {
+        "email": emailController!.text,
+      };
+      Response response = await dio.post(AppApi.forgetUrl, data: data);
+      if (response.statusCode == 201) {
+        print('response$response');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => VerifyCodeScreen(),
+          ),
+        );
+      }
+    } catch (error) {
+      print("An error***********");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.primaryColor,
+          content: Text(
+            "An error occurred. Please try again.",
+            style: TextStyle(
+              color: AppColors.whiteColor,
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     emailController = TextEditingController();
@@ -73,12 +107,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onPressed: () {
                       print('email ====${emailController!.text}');
                       if (keyForm.currentState!.validate()) ;
-                      print("from valide");
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VerifyCodeScreen()));
+                      forget();
                     })
               ],
             ),
