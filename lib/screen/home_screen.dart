@@ -1,7 +1,9 @@
+import 'package:app/controller/home_controller.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -70,36 +72,52 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                SizedBox(
-                  height: 30,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(
-                            20,
-                          ),
-                          border: Border.all(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        child: Text(
-                          "data",
-                        ),
+                FutureBuilder(
+                  future: controller.getAllCategory(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        color: AppColors.primaryColor,
                       );
-                    },
-                    itemCount: 10,
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: 10,
-                    ),
-                  ),
+                    } else if (snapshot.hasData) {
+                      if (snapshot.data!.allCategories!.isNotEmpty) {
+                        return SizedBox(
+                          height: 30,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.whiteColor,
+                                  borderRadius: BorderRadius.circular(
+                                    20,
+                                  ),
+                                  border: Border.all(
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                                child: Text(
+                                  snapshot.data!.allCategories![index].name!,
+                                ),
+                              );
+                            },
+                            itemCount: snapshot.data!.allCategories!.length,
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 10,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Text("No Categories.");
+                      }
+                    }
+                    return SizedBox();
+                  },
                 ),
                 SizedBox(
                   height: 15,

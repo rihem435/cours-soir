@@ -1,4 +1,4 @@
-import 'package:app/events_app.dart';
+import 'package:app/shop_app.dart';
 import 'package:app/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,5 +19,5 @@ var afficheIcon = const Icon(
 );
 
 void main() {
-  runApp(EventsApp());
+  runApp(ShopApp());
 }
