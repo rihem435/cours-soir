@@ -1,4 +1,5 @@
 import 'package:app/core/networking/app_api.dart';
+import 'package:app/core/storage/app_storage.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/model/user/user_model.dart';
 import 'package:app/screen/home_screen.dart';
@@ -36,6 +37,10 @@ class LoginController extends GetxController {
         userModel = UserModel.fromJson(response.data);
 
         if (userModel!.user!.items == "client") {
+          AppStorage.saveEmail(userModel!.user!.email!);
+          AppStorage.saveUserName(userModel!.user!.fullname!);
+          AppStorage.savevAccessToken(userModel!.tokens!.accessToken!);
+
           Get.to(HomeScreen());
         }
       }

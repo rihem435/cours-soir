@@ -1,10 +1,13 @@
+import 'package:app/controller/profile_controller.dart';
+import 'package:app/core/storage/app_storage.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
 import 'package:app/screen/new_password_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class VerifyCodeScreen extends StatelessWidget {
+class VerifyCodeScreen extends GetView<ProfileController> {
   const VerifyCodeScreen({Key? key}) : super(key: key);
 
   @override
@@ -58,63 +61,90 @@ class VerifyCodeScreen extends StatelessWidget {
                       SizedBox(
                         width: 56,
                         height: 56,
-                        child: AppInputText(validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "code!";
-                          }
-                          return null;
-                        }),
+                        child: AppInputText(
+                            controller: controller.code1Controller,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "code!";
+                              }
+                              return null;
+                            }),
                       ),
                       SizedBox(width: 20),
                       SizedBox(
                         width: 56,
                         height: 56,
-                        child: AppInputText(validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "code!";
-                          }
-                          return null;
-                        }),
+                        child: AppInputText(
+                          controller: controller.code2Controller,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return "code!";
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       SizedBox(width: 20),
                       SizedBox(
                         width: 56,
                         height: 56,
-                        child: AppInputText(validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "code!";
-                          }
-                          return null;
-                        }),
+                        child: AppInputText(
+                            controller: controller.code3Controller,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "code!";
+                              }
+                              return null;
+                            }),
                       ),
                       SizedBox(width: 20),
                       SizedBox(
                         width: 56,
                         height: 56,
-                        child: AppInputText(validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "code!";
-                          }
-                          return null;
-                        }),
+                        child: AppInputText(
+                            controller: controller.code4Controller,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "code!";
+                              }
+                              return null;
+                            }),
                       ),
                       SizedBox(width: 20),
                       SizedBox(
                         width: 56,
                         height: 56,
-                        child: AppInputText(validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "code!";
-                          }
-                          return null;
-                        }),
+                        child: AppInputText(
+                           
+                            controller: controller.code5Controller,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "code!";
+                              }
+                              return null;
+                            }),
+                      ),
+                      SizedBox(width: 20),
+                      SizedBox(
+                        width: 56,
+                        height: 56,
+                        child: AppInputText(
+                            controller: controller.code6Controller,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return "code!";
+                              }
+                              return null;
+                            }),
                       ),
                     ],
                   ),
                   SizedBox(height: 50),
                   AppButton(
                       text: Text("Verify Code"),
-                      onPressed: () {
+                      onPressed: () async {
+                        await AppStorage.savevCode(
+                            "${controller.code1Controller!.text}${controller.code2Controller!.text}${controller.code3Controller!.text}${controller.code4Controller!.text}${controller.code5Controller!.text}${controller.code6Controller!.text}");
                         Navigator.push(
                             context,
                             MaterialPageRoute(

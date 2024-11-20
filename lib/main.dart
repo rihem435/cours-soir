@@ -1,6 +1,7 @@
 import 'package:app/shop_app.dart';
 import 'package:app/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 // Text : widget
 var afficheText = const Text(
@@ -18,6 +19,7 @@ var afficheIcon = const Icon(
   size: 25,
 );
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(ShopApp());
 }

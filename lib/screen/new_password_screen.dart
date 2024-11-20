@@ -1,35 +1,28 @@
+import 'package:app/controller/profile_controller.dart';
 import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/widgets/app_button.dart';
 import 'package:app/core/widgets/app_input_text.dart';
 import 'package:app/screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class NewPasswordScreen extends StatefulWidget {
-  @override
-  State<NewPasswordScreen> createState() => _NewPasswordScreenState();
-}
-
-class _NewPasswordScreenState extends State<NewPasswordScreen> {
+class NewPasswordScreen extends GetView<ProfileController> {
   bool obscureText = false;
+
   TextEditingController? passwordController;
+
   TextEditingController? newPasswordController;
 
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
+
   void showPassword() {
-    setState(() {
-      obscureText = !obscureText;
-    });
+    //setState(() {
+    obscureText = !obscureText;
+    // });
     print("obscuretext $obscureText");
   }
 
-  @override
-  void initState() {
-    passwordController = TextEditingController();
-    newPasswordController = TextEditingController();
-
-    super.initState();
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +77,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       ),
                     ),
                     obscureText: obscureText,
-                    controller: passwordController,
+                    controller: controller.passwordController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "password is required";
@@ -124,11 +117,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       text: Text("confirmer"),
                       onPressed: () {
                         if (keyForm.currentState!.validate()) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
-                            ),
-                          );
+                          controller.verifyCodeAndResetPassword();
                         }
                       })
                 ],

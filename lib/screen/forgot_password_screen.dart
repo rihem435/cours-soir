@@ -1,3 +1,4 @@
+import 'package:app/controller/profile_controller.dart';
 import 'package:app/core/helpers/app_regex.dart';
 import 'package:app/core/networking/app_api.dart';
 import 'package:app/core/theme/app_colors.dart';
@@ -6,52 +7,10 @@ import 'package:app/core/widgets/app_input_text.dart';
 import 'package:app/screen/verfiy_code_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  TextEditingController? emailController;
+class ForgotPasswordScreen extends GetView<ProfileController> {
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
-
-  Dio dio = Dio();
-  forget() async {
-    try {
-      Map<String, dynamic> data = {
-        "email": emailController!.text,
-      };
-      Response response = await dio.post(AppApi.forgetUrl, data: data);
-      if (response.statusCode == 201) {
-        print('response$response');
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => VerifyCodeScreen(),
-          ),
-        );
-      }
-    } catch (error) {
-      print("An error***********");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.primaryColor,
-          content: Text(
-            "An error occurred. Please try again.",
-            style: TextStyle(
-              color: AppColors.whiteColor,
-            ),
-          ),
-        ),
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    emailController = TextEditingController();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +50,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   label: 'Email',
                   hintText: "name@example.com",
                   prefixIcon: Icons.email,
-                  controller: emailController,
+                  controller: controller.emailController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "email is required";
@@ -105,9 +64,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 AppButton(
                     text: Text("Reset Password"),
                     onPressed: () {
-                      print('email ====${emailController!.text}');
                       if (keyForm.currentState!.validate()) ;
-                      forget();
+                      controller.forgotPassword();
                     })
               ],
             ),
