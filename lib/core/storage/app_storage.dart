@@ -37,4 +37,11 @@ class AppStorage {
   static String? readCode() {
     return SecureStorage.readSecureData(codeKey);
   }
+   static savevCode(String code) {
+    SecureStorage.writeSecureData(key: codeKey, value: code);
+  }
+
+  static String? readCode1() {
+    return SecureStorage.readSecureData(codeKey);
+  }
 }
